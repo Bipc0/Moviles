@@ -33,7 +33,7 @@ class Forma extends StatelessWidget {
                 ),
                 Text(
                   'Familia: $_Familia',
-                  style: TextStyle(fontSize: 24, color: Colors.red),
+                  style: TextStyle(fontSize: 24, color: Colors.orange),
                 ),
               ],
             ),
