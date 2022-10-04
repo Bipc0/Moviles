@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Page/Arbol_page.dart';
-import 'package:flutter_application_1/Page/Arbusto_page.dart';
-import 'package:flutter_application_1/Page/Flores_page.dart';
-import 'package:flutter_application_1/Page/Flores_page.dart';
-import 'package:flutter_application_1/Page/servicios_turismo.dart';
+import 'package:flutter_application_1/Page/servicios_page.dart';
+import 'package:flutter_application_1/Page/HomePage.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage();
+class Servicio extends StatefulWidget {
+  const Servicio();
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Servicio> createState() => _ServicioState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ServicioState extends State<Servicio> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 1,
       child: Scaffold(
         drawer: Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
@@ -35,38 +32,32 @@ class _HomePageState extends State<HomePage> {
               ListTile(
                 title: const Text('Flora Regional'),
                 onTap: () {
-                  Flores();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage()));
                 },
               ),
               ListTile(
                 title: const Text('Turismo Atacama'),
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Servicio()));
-                },
+                onTap: () {},
               ),
             ],
           ),
         ),
         appBar: AppBar(
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: Color.fromARGB(255, 224, 180, 98),
           title: Text(
-            'Flora Regional de Valparaiso',
+            'Servicio Turismo Atacama',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white),
           ),
           bottom: TabBar(tabs: [
-            Tab(text: 'Flores'),
-            Tab(text: 'Arbusto'),
-            Tab(text: 'Arboles')
+            Tab(text: 'Servicios'),
           ]),
         ),
         body: TabBarView(children: [
-          Flores(),
-          Arbusto2(),
-          Arbol(),
+          ServiciosPage(),
         ]),
       ),
     );
