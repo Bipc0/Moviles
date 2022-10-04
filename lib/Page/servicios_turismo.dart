@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Page/contactos_page.dart';
-import 'package:flutter_application_1/Page/servicios_page.dart';
 import 'package:flutter_application_1/Page/HomePage.dart';
+import 'package:flutter_application_1/Page/visitas_page.dart';
+import 'package:flutter_application_1/Page/fechas_page.dart';
+import 'package:flutter_application_1/Page/horarios_page.dart';
+import 'package:flutter_application_1/Page/recomendaciones_page.dart';
 
 class Servicio extends StatefulWidget {
   const Servicio();
@@ -14,7 +17,7 @@ class _ServicioState extends State<Servicio> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 4,
       child: Scaffold(
         drawer: Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
@@ -62,9 +65,15 @@ class _ServicioState extends State<Servicio> {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white),
           ),
-          bottom: TabBar(tabs: [Tab(text: 'Servicios')]),
+          bottom: TabBar(tabs: [
+            Tab(text: 'Visitas'),
+            Tab(text: 'Fechas'),
+            Tab(text: 'Horarios'),
+            Tab(text: 'Recomendaciones'),
+          ]),
         ),
-        body: TabBarView(children: [ServiciosPage()]),
+        body: TabBarView(
+            children: [Visitas(), Fechas(), Horarios(), Recomendaciones()]),
       ),
     );
   }
