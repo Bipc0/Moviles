@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Forma.dart';
+
 class Flores extends StatefulWidget {
   const Flores();
 
@@ -13,20 +14,23 @@ class _FloresState extends State<Flores> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,
-        title: Text('Plantas', textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Plantas',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: ListView(
-        children: [
-        Forma(
-          Nombre: 'Fumaria blanca',
-          image: '',
-          Familia: 'Papaveraceae',
-        )
-        ],
+          children: [
+            Forma(
+              Nombre: 'Fumaria blanca',
+              image: 'fumaria_capreolata.jpg',
+              Familia: 'Papaveraceae',
+            )
+          ],
         ),
-        ),
-      );
+      ),
+    );
   }
 }
