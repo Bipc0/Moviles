@@ -13,7 +13,7 @@ class Forma extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 320,
+      height: 480,
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
