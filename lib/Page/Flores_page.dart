@@ -17,7 +17,9 @@ class _FloresState extends State<Flores> {
           title: const Text('C1 DAM020-2022-2'),
           centerTitle: true,
           bottom: PreferredSize(
-              child: Text("Diego Jorquera"), preferredSize: Size.zero),
+              child: Text("Diego Jorquera",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              preferredSize: Size.zero),
           leading: const Icon(MdiIcons.accountCash)),
       body: Center(
         child: ListView(

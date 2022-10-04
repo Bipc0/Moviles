@@ -77,6 +77,7 @@ class _ServiciosPageState extends State<ContactosPage> {
     return Form(
         child: (Column(children: [
       TextFormField(
+        keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           icon: const Icon(MdiIcons.at),
           hintText: 'Escribe tu correo',
