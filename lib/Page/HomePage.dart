@@ -4,6 +4,7 @@ import 'package:flutter_application_1/Page/Arbusto_page.dart';
 import 'package:flutter_application_1/Page/Flores_page.dart';
 import 'package:flutter_application_1/Page/Flores_page.dart';
 import 'package:flutter_application_1/Page/servicios_turismo.dart';
+import 'package:flutter_application_1/Page/contactos_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage();
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               const DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.lightGreen,
                 ),
                 child: Text('Seleccione Servicio'),
               ),
@@ -45,6 +46,15 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => Servicio()));
+                },
+              ),
+              ListTile(
+                title: const Text('Contacto Turismo Atacama'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeForm()));
                 },
               ),
             ],

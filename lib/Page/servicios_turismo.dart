@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Page/contactos_page.dart';
 import 'package:flutter_application_1/Page/servicios_page.dart';
 import 'package:flutter_application_1/Page/HomePage.dart';
 
@@ -25,7 +26,7 @@ class _ServicioState extends State<Servicio> {
             children: [
               const DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color.fromARGB(255, 224, 180, 98),
                 ),
                 child: Text('Seleccione Servicio'),
               ),
@@ -42,6 +43,15 @@ class _ServicioState extends State<Servicio> {
                 title: const Text('Turismo Atacama'),
                 onTap: () {},
               ),
+              ListTile(
+                title: const Text('Contacto Turismo Atacama'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeForm()));
+                },
+              ),
             ],
           ),
         ),
@@ -52,13 +62,9 @@ class _ServicioState extends State<Servicio> {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white),
           ),
-          bottom: TabBar(tabs: [
-            Tab(text: 'Servicios'),
-          ]),
+          bottom: TabBar(tabs: [Tab(text: 'Servicios')]),
         ),
-        body: TabBarView(children: [
-          ServiciosPage(),
-        ]),
+        body: TabBarView(children: [ServiciosPage()]),
       ),
     );
   }
