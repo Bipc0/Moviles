@@ -75,9 +75,9 @@ class HomePage extends StatelessWidget {
               var plantas = snapshot.data!.docs[index];
               //print('PRODUCTO:' + producto.data().toString());
               return ListTile(
-                leading: Icon(
-                  MdiIcons.cube,
-                  color: Colors.deepPurple,
+                leading: CircleAvatar(
+                  radius: 40.0,
+                  backgroundImage: NetworkImage(plantas['image']),
                 ),
                 title: Text(plantas['nombre']),
                 subtitle: Text('Familia: ${plantas['familia']}'),

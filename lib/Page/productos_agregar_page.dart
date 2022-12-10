@@ -44,7 +44,6 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                 decoration: InputDecoration(
                   label: Text('Region'),
                 ),
-                keyboardType: TextInputType.number,
               ),
               Container(
                 width: double.infinity,
