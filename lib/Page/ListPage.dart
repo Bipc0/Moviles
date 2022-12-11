@@ -7,57 +7,12 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/Page/productos_agregar_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class ListPage extends StatelessWidget {
+  const ListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(
-          MdiIcons.firebase,
-          color: Colors.yellow,
-        ),
-        backgroundColor: Colors.deepPurple,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Home'),
-            FutureBuilder(
-              future: this.getUserEmail(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData ||
-                    snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Cargando...');
-                }
-                return Text(
-                  snapshot.data,
-                  style: TextStyle(fontSize: 12),
-                );
-              },
-            ),
-          ],
-        ),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'about',
-                child: Text('About Ejemplo Firebase'),
-              ),
-              PopupMenuItem(
-                value: 'logout',
-                child: Text('Cerrar Sesión'),
-              ),
-            ],
-            onSelected: (opcionSeleccionada) {
-              if (opcionSeleccionada == 'logout') {
-                logout(context);
-              }
-            },
-          ),
-        ],
-      ),
       body: StreamBuilder(
         stream: FirestoreService().plantas(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -82,7 +37,7 @@ class HomePage extends StatelessWidget {
                 title: Text(plantas['nombre']),
                 subtitle: Text('Familia: ${plantas['familia']}'),
                 trailing: OutlinedButton(
-                  child: Text('Borrar'),
+                  child: Text('Agregar'),
                   onPressed: () {
                     FirestoreService().borrar(plantas.id);
                   },
@@ -90,14 +45,6 @@ class HomePage extends StatelessWidget {
               );
             },
           );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: ((context) => ProductosAgregarPage()));
-          Navigator.push(context, route);
         },
       ),
     );
