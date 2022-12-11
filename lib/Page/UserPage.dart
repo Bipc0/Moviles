@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/services/firestore_service.dart';
-
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_application_1/Page/productos_agregar_page.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -40,7 +38,7 @@ class UserPage extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: FirestoreService().plantas(),
+        stream: uno(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData ||
               snapshot.connectionState == ConnectionState.waiting) {
@@ -73,19 +71,38 @@ class UserPage extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: ((context) => ProductosAgregarPage()));
-          Navigator.push(context, route);
-        },
-      ),
     );
   }
 
   Future<String> getUserEmail() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.getString('userEmail') ?? '';
+  }
+
+  Future<dynamic> GetNombre() async {
+    var firebaseUser = await FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection("Listas")
+        .doc(firebaseUser.uid)
+        .get()
+        .then((DocumentSnapshot docs) {
+      final data = docs.data() as Map<String, dynamic>;
+      final role = data['nombre'];
+      print("---------------------------------------");
+      print(role.toString());
+      print("---------------------------------------");
+      return role;
+    });
+    return "";
+  }
+
+  Stream<QuerySnapshot> uno() {
+    // print("---------------------------------------");
+    // print(GetNombre());
+    // print("---------------------------------------");
+    return FirebaseFirestore.instance
+        .collection('Plantas')
+        .where('nombre', isEqualTo: GetNombre())
+        .snapshots();
   }
 }

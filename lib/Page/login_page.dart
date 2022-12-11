@@ -108,22 +108,6 @@ class _LoginPageState extends State<LoginPage> {
       //redirigir al home
 
       var firebaseUser = await FirebaseAuth.instance.currentUser!;
-      FirebaseFirestore.instance
-          .collection("Usuarios")
-          .doc(firebaseUser.uid)
-          .get()
-          .then((DocumentSnapshot docs) {
-        final data = docs.data() as Map<String, dynamic>;
-        final role = data['role'];
-
-        if (role == 'admin') {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AdminPage()));
-        } else {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
-        }
-      });
 
       if (firebaseUser.uid == 'rBMZ3Tfo92ZnKnhXJmSKmR67VPF2') {
         // if user has a collection, go to user screens
@@ -150,24 +134,6 @@ class _LoginPageState extends State<LoginPage> {
           break;
       }
       setState(() {});
-    }
-  }
-
-  void _checkRole() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    final DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('Usuarios')
-        .doc(user?.uid)
-        .get();
-
-    setState(() {
-      role = snap['role'];
-    });
-
-    if (role == 'user') {
-      (context) => HomePage();
-    } else if (role == 'admin') {
-      (context) => AdminPage();
     }
   }
 }
