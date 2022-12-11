@@ -13,6 +13,19 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(
+          MdiIcons.viewList,
+          color: Colors.yellow,
+        ),
+        backgroundColor: Color.fromARGB(255, 0, 113, 26),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Lista de Plantas'),
+          ],
+        ),
+      ),
       body: StreamBuilder(
         stream: FirestoreService().plantas(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
