@@ -14,6 +14,9 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
   TextEditingController familiaCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
   TextEditingController regionCtrl = TextEditingController();
+  TextEditingController imagenCtrl = TextEditingController();
+  String noimage =
+      'https://cdn.discordapp.com/attachments/429058895986556930/1049823959413162014/FjVIQsuX0A096rC.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,12 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                   label: Text('Region'),
                 ),
               ),
+              TextFormField(
+                controller: imagenCtrl,
+                decoration: InputDecoration(
+                  label: Text('Imagen'),
+                ),
+              ),
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -52,11 +61,21 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                       backgroundColor: Colors.deepPurple),
                   child: Text('Agregar Planta'),
                   onPressed: () {
-                    FirestoreService().agregar(
-                      familiaCtrl.text.trim(),
-                      nombreCtrl.text.trim(),
-                      regionCtrl.text.trim(),
-                    );
+                    if (imagenCtrl.text.trim() != "") {
+                      FirestoreService().agregar(
+                        familiaCtrl.text.trim(),
+                        nombreCtrl.text.trim(),
+                        regionCtrl.text.trim(),
+                        imagenCtrl.text.trim(),
+                      );
+                    } else {
+                      FirestoreService().agregar(
+                        familiaCtrl.text.trim(),
+                        nombreCtrl.text.trim(),
+                        regionCtrl.text.trim(),
+                        noimage,
+                      );
+                    }
                     Navigator.pop(context);
                   },
                 ),

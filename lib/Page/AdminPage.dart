@@ -1,28 +1,56 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_1/Page/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/services/firestore_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/Page/productos_agregar_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/Page/login_page.dart';
 
-class ListPage extends StatelessWidget {
-  const ListPage({Key? key}) : super(key: key);
+class AdminPage extends StatelessWidget {
+  const AdminPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Text('Cerrar Sesión'),
+              ),
+            ],
+            onSelected: (opcionSeleccionada) {
+              if (opcionSeleccionada == 'logout') {
+                logout(context);
+              }
+            },
+          ),
+        ],
         leading: Icon(
-          MdiIcons.viewList,
+          MdiIcons.leaf,
           color: Colors.yellow,
         ),
         backgroundColor: Color.fromARGB(255, 0, 113, 26),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Lista de Plantas'),
+            Text('Mis Plantas'),
+            FutureBuilder(
+              future: this.getUserEmail(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData ||
+                    snapshot.connectionState == ConnectionState.waiting) {
+                  return Text('Cargando...');
+                }
+                return Text(
+                  snapshot.data,
+                  style: TextStyle(fontSize: 12),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -58,6 +86,14 @@ class ListPage extends StatelessWidget {
               );
             },
           );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: ((context) => ProductosAgregarPage()));
+          Navigator.push(context, route);
         },
       ),
     );

@@ -1,6 +1,7 @@
-import 'package:flutter_application_1/Page/ListPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Page/AdminPage.dart';
 import 'package:flutter_application_1/Page/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String role = 'user';
   final formKey = GlobalKey<FormState>();
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
@@ -104,10 +106,33 @@ class _LoginPageState extends State<LoginPage> {
       sp.setString('userEmail', userCredential.user!.email.toString());
 
       //redirigir al home
-      MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => HomePage(),
-      );
-      Navigator.pushReplacement(context, route);
+
+      var firebaseUser = await FirebaseAuth.instance.currentUser!;
+      FirebaseFirestore.instance
+          .collection("Usuarios")
+          .doc(firebaseUser.uid)
+          .get()
+          .then((DocumentSnapshot docs) {
+        final data = docs.data() as Map<String, dynamic>;
+        final role = data['role'];
+
+        if (role == 'admin') {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
+        } else {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        }
+      });
+
+      if (firebaseUser.uid == 'rBMZ3Tfo92ZnKnhXJmSKmR67VPF2') {
+        // if user has a collection, go to user screens
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AdminPage()));
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
     } on FirebaseAuthException catch (ex) {
       //si el login no es válido llegamos acá
       switch (ex.code) {
@@ -125,6 +150,24 @@ class _LoginPageState extends State<LoginPage> {
           break;
       }
       setState(() {});
+    }
+  }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('Usuarios')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+
+    if (role == 'user') {
+      (context) => HomePage();
+    } else if (role == 'admin') {
+      (context) => AdminPage();
     }
   }
 }
