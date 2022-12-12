@@ -1,33 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_1/Page/UserPage.dart';
-import 'package:flutter_application_1/Page/login_page.dart';
-import 'package:flutter_application_1/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListPage extends StatelessWidget {
-  const ListPage({Key? key}) : super(key: key);
+class UserPage extends StatelessWidget {
+  const UserPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(
-          MdiIcons.viewList,
+          MdiIcons.leaf,
           color: Colors.yellow,
         ),
         backgroundColor: Color.fromARGB(255, 0, 113, 26),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Lista de Plantas'),
+            Text('Mis Plantas'),
+            FutureBuilder(
+              future: this.getUserEmail(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData ||
+                    snapshot.connectionState == ConnectionState.waiting) {
+                  return Text('Cargando...');
+                }
+                return Text(
+                  snapshot.data,
+                  style: TextStyle(fontSize: 12),
+                );
+              },
+            ),
           ],
         ),
       ),
       body: StreamBuilder(
-        stream: FirestoreService().plantas(),
+        stream: FirestoreService().uno(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData ||
               snapshot.connectionState == ConnectionState.waiting) {
@@ -41,7 +52,7 @@ class ListPage extends StatelessWidget {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var plantas = snapshot.data!.docs[index];
-              //print('PRODUCTO:' + producto.data().toString());
+
               return ListTile(
                 leading: CircleAvatar(
                   radius: 40.0,
@@ -52,11 +63,7 @@ class ListPage extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
-                IconButton(
-                  onPressed: () {},icon: const Icon(Icons.add)),
-
-
+                  //IconButton(onPressed: (){FirestoreService().borrar(plantas.id);}, icon: const Icon(Icons.delete)),
                   IconButton(onPressed: () {showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -89,17 +96,30 @@ class ListPage extends StatelessWidget {
     return sp.getString('userEmail') ?? '';
   }
 
-  void logout(BuildContext context) async {
-    //cerrar sesion en firebase
-    await FirebaseAuth.instance.signOut();
+  String myFunction() {
+    String result = "";
+    getMyFieldValue(getCurrentUID()).then((String result) {
+      return result;
+    });
 
-    //borrar user email de shared preferences
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.remove('userEmail');
+    return result;
+  }
 
-    //redirigir al login
-    MaterialPageRoute route =
-        MaterialPageRoute(builder: ((context) => LoginPage()));
-    Navigator.pushReplacement(context, route);
+  String getCurrentUID() {
+    var firebaseUser = FirebaseAuth.instance.currentUser!;
+    String uid = firebaseUser.uid.toString();
+
+    return uid;
+  }
+
+  Future<String> getMyFieldValue(String uid) async {
+    CollectionReference collRef =
+        FirebaseFirestore.instance.collection('Listas');
+
+    QuerySnapshot snapshot = await collRef.where('uid', isEqualTo: uid).get();
+
+    DocumentSnapshot doc = snapshot.docs.first;
+
+    return doc.get('nombre');
   }
 }
