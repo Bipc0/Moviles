@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/Page/UserPage.dart';
 import 'package:flutter_application_1/Page/login_page.dart';
 import 'package:flutter_application_1/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,12 +49,31 @@ class ListPage extends StatelessWidget {
                 ),
                 title: Text(plantas['nombre']),
                 subtitle: Text('Familia: ${plantas['familia']}'),
-                trailing: OutlinedButton(
-                  child: Text('Añadir'),
-                  onPressed: () {
-                    FirestoreService().borrar(plantas.id);
-                  },
-                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                  IconButton(onPressed: () {},icon: const Icon(Icons.add)),
+
+
+                  IconButton(onPressed: () {showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Row(children: [
+                      Container(child: Column(children: [
+                      Text(plantas['nombre']),
+                      Image.network(plantas['image'],
+                      width: 250, height: 250, ),],) ),],),
+                      content: Text('Familia: ${plantas['familia']}'),
+                      actions: [
+                      TextButton(child: Text('Ok'),
+                      onPressed: () => Navigator.pop(context)
+                      ,)
+                    ],
+                  ),
+                );
+                },icon: const Icon(Icons.list))
+                ]
+                )
               );
             },
           );

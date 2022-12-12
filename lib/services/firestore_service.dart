@@ -8,31 +8,39 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection('Plantas').snapshots();
   }
 
-  Future<dynamic> GetNombre() async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser!;
-    FirebaseFirestore.instance
-        .collection("Listas")
-        .doc(firebaseUser.uid)
-        .get()
-        .then((DocumentSnapshot docs) {
-      final data = docs.data() as Map<String, dynamic>;
-      final role = data['nombre'];
-      print("---------------------------------------");
-      print(role.toString());
-      print("---------------------------------------");
-      return role;
-    });
-    return "";
-  }
-
   Stream<QuerySnapshot> uno() {
-    // print("---------------------------------------");
-    // print(GetNombre());
-    // print("---------------------------------------");
     return FirebaseFirestore.instance
         .collection('Plantas')
-        .where('nombre', isEqualTo: GetNombre())
+        .where('nombre', isEqualTo: myFunction())
         .snapshots();
+  }
+
+  String myFunction() {
+    String result = "";
+    getMyFieldValue(getCurrentUID()).then((String data) {
+      result = data;
+      return data;
+    });
+
+    return result;
+  }
+
+  String getCurrentUID() {
+    var firebaseUser = FirebaseAuth.instance.currentUser!;
+    String uid = firebaseUser.uid.toString();
+
+    return uid;
+  }
+
+  Future<String> getMyFieldValue(String uid) async {
+    CollectionReference collRef =
+        FirebaseFirestore.instance.collection('Listas');
+
+    QuerySnapshot snapshot = await collRef.where('uid', isEqualTo: uid).get();
+
+    DocumentSnapshot doc = snapshot.docs.first;
+
+    return doc.get('nombre');
   }
 
   //agregar
