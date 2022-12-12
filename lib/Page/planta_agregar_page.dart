@@ -53,7 +53,7 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple),
+                      backgroundColor: Color.fromARGB(255, 214, 188, 73)),
                   child: Text('Agregar Planta'),
                   onPressed: () {
                     if (imagenCtrl.text.trim() != "") {

@@ -3,9 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter_application_1/Page/productos_agregar_page.dart';
+import 'package:flutter_application_1/Page/planta_agregar_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/Page/login_page.dart';
+import 'package:flutter_application_1/Page/planta_editar_page.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -79,13 +80,19 @@ class AdminPage extends StatelessWidget {
                 subtitle: Text('Familia: ${plantas['familia']}'),
                 trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                   IconButton(
-                    onPressed: () {
-                      FirestoreService().borrar(plantas.id);
-                        },icon: const Icon(Icons.delete)),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
-
-                ]
-                ),
+                      onPressed: () {
+                        FirestoreService().borrar(plantas.id);
+                      },
+                      icon: const Icon(Icons.delete)),
+                  IconButton(
+                      onPressed: () {
+                        var nombre = plantas['nombre'];
+                        MaterialPageRoute route = MaterialPageRoute(
+                            builder: ((context) => new EditarPlanta(nombre)));
+                        Navigator.push(context, route);
+                      },
+                      icon: const Icon(Icons.edit))
+                ]),
               );
             },
           );

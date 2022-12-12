@@ -7,6 +7,14 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection('Plantas').snapshots();
   }
 
+  Stream<QuerySnapshot> planta(String nombre) {
+    // return FirebaseFirestore.instance.collection('productos').snapshots();
+    return FirebaseFirestore.instance
+        .collection('Plantas')
+        .where('nombre', isEqualTo: nombre)
+        .snapshots();
+  }
+
   Stream<QuerySnapshot> plantasUser(String uid) {
     // return FirebaseFirestore.instance.collection('productos').snapshots();
     return FirebaseFirestore.instance
@@ -47,5 +55,13 @@ class FirestoreService {
   //borrar
   Future borrarUser(String nombre) {
     return FirebaseFirestore.instance.collection('Listas').doc(nombre).delete();
+  }
+
+  Future editar(String id, String familia, String nombre, String image) {
+    return FirebaseFirestore.instance.collection('Plantas').doc(id).update({
+      'familia': familia,
+      'nombre': nombre,
+      'image': image,
+    });
   }
 }
