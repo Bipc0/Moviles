@@ -38,7 +38,7 @@ class UserPage extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: FirestoreService().uno(),
+        stream: FirestoreService().plantasUser(getCurrentUID()),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData ||
               snapshot.connectionState == ConnectionState.waiting) {
@@ -54,19 +54,50 @@ class UserPage extends StatelessWidget {
               var plantas = snapshot.data!.docs[index];
 
               return ListTile(
-                leading: CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: NetworkImage(plantas['image']),
-                ),
-                title: Text(plantas['nombre']),
-                subtitle: Text('Familia: ${plantas['familia']}'),
-                trailing: OutlinedButton(
-                  child: Text('Borrar'),
-                  onPressed: () {
-                    FirestoreService().borrar(plantas.id);
-                  },
-                ),
-              );
+                  leading: CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: NetworkImage(plantas['image']),
+                  ),
+                  title: Text(plantas['nombre']),
+                  subtitle: Text('Familia: ${plantas['familia']}'),
+                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                    IconButton(
+                        onPressed: () {
+                          FirestoreService().borrarUser(plantas.id);
+                        },
+                        icon: const Icon(Icons.delete)),
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Row(
+                                children: [
+                                  Container(
+                                      child: Column(
+                                    children: [
+                                      Text(plantas['nombre']),
+                                      Image.network(
+                                        plantas['image'],
+                                        width: 250,
+                                        height: 250,
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              ),
+                              content: Text('Familia: ${plantas['familia']}'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Ok'),
+                                  onPressed: () => Navigator.pop(context),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.list))
+                  ]));
             },
           );
         },
@@ -79,30 +110,10 @@ class UserPage extends StatelessWidget {
     return sp.getString('userEmail') ?? '';
   }
 
-  String myFunction() {
-    String result = "";
-    getMyFieldValue(getCurrentUID()).then((String result) {
-      return result;
-    });
-
-    return result;
-  }
-
   String getCurrentUID() {
     var firebaseUser = FirebaseAuth.instance.currentUser!;
     String uid = firebaseUser.uid.toString();
 
     return uid;
-  }
-
-  Future<String> getMyFieldValue(String uid) async {
-    CollectionReference collRef =
-        FirebaseFirestore.instance.collection('Listas');
-
-    QuerySnapshot snapshot = await collRef.where('uid', isEqualTo: uid).get();
-
-    DocumentSnapshot doc = snapshot.docs.first;
-
-    return doc.get('nombre');
   }
 }

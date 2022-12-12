@@ -8,21 +8,12 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection('Plantas').snapshots();
   }
 
-  Stream<QuerySnapshot> uno() {
+  Stream<QuerySnapshot> plantasUser(String uid) {
+    // return FirebaseFirestore.instance.collection('productos').snapshots();
     return FirebaseFirestore.instance
-        .collection('Plantas')
-        .where('nombre', isEqualTo: myFunction())
+        .collection('Listas')
+        .where('uid', isEqualTo: uid)
         .snapshots();
-  }
-
-  String myFunction() {
-    String result = "";
-    getMyFieldValue(getCurrentUID()).then((String data) {
-      result = data;
-      return data;
-    });
-
-    return result;
   }
 
   String getCurrentUID() {
@@ -53,12 +44,22 @@ class FirestoreService {
     });
   }
 
-  Future agregarMilista(String familia, String nombre, String region) {
-    return FirebaseFirestore.instance.collection('Plantas').doc().set({
+  Future agregarUser(
+      String familia, String nombre, String region, String image, String uid) {
+    return FirebaseFirestore.instance.collection('Listas').doc().set({
       'familia': familia,
       'nombre': nombre,
       'region': region,
+      'image': image,
+      'uid': uid
     });
+  }
+
+  Future agregarMilista(String uid, String nombre) {
+    return FirebaseFirestore.instance
+        .collection('Plantas')
+        .doc()
+        .set({'nombre': nombre, 'uid': uid});
   }
 
   //borrar
@@ -67,5 +68,10 @@ class FirestoreService {
         .collection('Plantas')
         .doc(nombre)
         .delete();
+  }
+
+  //borrar
+  Future borrarUser(String nombre) {
+    return FirebaseFirestore.instance.collection('Listas').doc(nombre).delete();
   }
 }

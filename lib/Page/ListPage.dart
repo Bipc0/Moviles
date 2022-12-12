@@ -43,38 +43,55 @@ class ListPage extends StatelessWidget {
               var plantas = snapshot.data!.docs[index];
               //print('PRODUCTO:' + producto.data().toString());
               return ListTile(
-                leading: CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: NetworkImage(plantas['image']),
-                ),
-                title: Text(plantas['nombre']),
-                subtitle: Text('Familia: ${plantas['familia']}'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                  IconButton(onPressed: () {},icon: const Icon(Icons.add)),
-
-
-                  IconButton(onPressed: () {showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Row(children: [
-                      Container(child: Column(children: [
-                      Text(plantas['nombre']),
-                      Image.network(plantas['image'],
-                      width: 250, height: 250, ),],) ),],),
-                      content: Text('Familia: ${plantas['familia']}'),
-                      actions: [
-                      TextButton(child: Text('Ok'),
-                      onPressed: () => Navigator.pop(context)
-                      ,)
-                    ],
+                  leading: CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: NetworkImage(plantas['image']),
                   ),
-                );
-                },icon: const Icon(Icons.list))
-                ]
-                )
-              );
+                  title: Text(plantas['nombre']),
+                  subtitle: Text('Familia: ${plantas['familia']}'),
+                  trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                    IconButton(
+                        onPressed: () {
+                          FirestoreService().agregarUser(
+                              plantas['familia'],
+                              plantas['nombre'],
+                              plantas['region'],
+                              plantas['image'],
+                              getCurrentUID());
+                        },
+                        icon: const Icon(Icons.add)),
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Row(
+                                children: [
+                                  Container(
+                                      child: Column(
+                                    children: [
+                                      Text(plantas['nombre']),
+                                      Image.network(
+                                        plantas['image'],
+                                        width: 250,
+                                        height: 250,
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              ),
+                              content: Text('Familia: ${plantas['familia']}'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Ok'),
+                                  onPressed: () => Navigator.pop(context),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.list))
+                  ]));
             },
           );
         },
@@ -85,6 +102,13 @@ class ListPage extends StatelessWidget {
   Future<String> getUserEmail() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.getString('userEmail') ?? '';
+  }
+
+  String getCurrentUID() {
+    var firebaseUser = FirebaseAuth.instance.currentUser!;
+    String uid = firebaseUser.uid.toString();
+
+    return uid;
   }
 
   void logout(BuildContext context) async {

@@ -21,14 +21,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen.shade50,
+      backgroundColor: Color.fromARGB(255, 228, 148, 43),
       body: Center(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 30),
           width: double.infinity,
           height: 300,
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color.fromARGB(255, 200, 255, 202),
               border: Border.all(
                 color: Colors.lightGreen,
               ),
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: passwordCtrl,
                     decoration: InputDecoration(
-                      label: Text('Password'),
+                      label: Text('Contraseña'),
                     ),
                     obscureText: true,
                   ),
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green),
+                          backgroundColor: Color.fromARGB(255, 214, 188, 73)),
                       child: Text('INICIAR SESIÓN'),
                       onPressed: () => login(),
                     ),
