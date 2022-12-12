@@ -77,11 +77,14 @@ class AdminPage extends StatelessWidget {
                 ),
                 title: Text(plantas['nombre']),
                 subtitle: Text('Familia: ${plantas['familia']}'),
-                trailing: OutlinedButton(
-                  child: Text('Borrar'),
-                  onPressed: () {
-                    FirestoreService().borrar(plantas.id);
-                  },
+                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                  IconButton(
+                    onPressed: () {
+                      FirestoreService().borrar(plantas.id);
+                        },icon: const Icon(Icons.delete)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
+
+                ]
                 ),
               );
             },
