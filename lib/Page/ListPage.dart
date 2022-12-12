@@ -53,7 +53,6 @@ class ListPage extends StatelessWidget {
                           FirestoreService().agregarUser(
                               plantas['familia'],
                               plantas['nombre'],
-                              plantas['region'],
                               plantas['image'],
                               getCurrentUID());
                         },

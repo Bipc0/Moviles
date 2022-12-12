@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             title: Text(
-              'Flora Regional de Valparaiso',
+              'Flora de Chile',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
             ),

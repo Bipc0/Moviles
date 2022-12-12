@@ -16,24 +16,17 @@ class FirestoreService {
   }
 
   //agregar
-  Future agregar(String familia, String nombre, String region, String image) {
+  Future agregar(String familia, String nombre, String image) {
     return FirebaseFirestore.instance.collection('Plantas').doc().set({
       'familia': familia,
       'nombre': nombre,
-      'region': region,
       'image': image,
     });
   }
 
-  Future agregarUser(
-      String familia, String nombre, String region, String image, String uid) {
-    return FirebaseFirestore.instance.collection('Listas').doc().set({
-      'familia': familia,
-      'nombre': nombre,
-      'region': region,
-      'image': image,
-      'uid': uid
-    });
+  Future agregarUser(String familia, String nombre, String image, String uid) {
+    return FirebaseFirestore.instance.collection('Listas').doc().set(
+        {'familia': familia, 'nombre': nombre, 'image': image, 'uid': uid});
   }
 
   Future agregarMilista(String uid, String nombre) {

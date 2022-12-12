@@ -16,7 +16,7 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
   TextEditingController regionCtrl = TextEditingController();
   TextEditingController imagenCtrl = TextEditingController();
   String noimage =
-      'https://cdn.discordapp.com/attachments/429058895986556930/1049823959413162014/FjVIQsuX0A096rC.jpg';
+      'https://treehouse.co/uploads/szeflera-wyjatkowa-roslina-doniczkowa.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +44,6 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                 ),
               ),
               TextFormField(
-                controller: regionCtrl,
-                decoration: InputDecoration(
-                  label: Text('Region'),
-                ),
-              ),
-              TextFormField(
                 controller: imagenCtrl,
                 decoration: InputDecoration(
                   label: Text('Imagen'),
@@ -66,14 +60,12 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                       FirestoreService().agregar(
                         familiaCtrl.text.trim(),
                         nombreCtrl.text.trim(),
-                        regionCtrl.text.trim(),
                         imagenCtrl.text.trim(),
                       );
                     } else {
                       FirestoreService().agregar(
                         familiaCtrl.text.trim(),
                         nombreCtrl.text.trim(),
-                        regionCtrl.text.trim(),
                         noimage,
                       );
                     }
