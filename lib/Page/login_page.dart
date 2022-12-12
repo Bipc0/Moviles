@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
           error = 'Cuenta desactivada';
           break;
         default:
-          error = ex.message.toString();
+          error = 'Campos vacios';
           break;
       }
       setState(() {});
