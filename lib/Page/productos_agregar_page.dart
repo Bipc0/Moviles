@@ -23,6 +23,7 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Producto'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
